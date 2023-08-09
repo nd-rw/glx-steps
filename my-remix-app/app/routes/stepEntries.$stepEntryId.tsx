@@ -8,36 +8,36 @@ import {
 } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
-import { deleteNote, getNote } from "~/models/note.server";
+import { deleteStepEntry, getStepEntry } from "~/models/stepEntry.server";
 import { requireUserId } from "~/session.server";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const userId = await requireUserId(request);
-  invariant(params.noteId, "noteId not found");
+  invariant(params.stepEntryId, "noteId not found");
 
-  const note = await getNote({ id: params.noteId, userId });
-  if (!note) {
+  const stepEntry = await getStepEntry({ id: params.stepEntryId, userId });
+  if (!stepEntry) {
     throw new Response("Not Found", { status: 404 });
   }
-  return json({ note });
+  return json({ stepEntry });
 };
 
 export const action = async ({ params, request }: ActionArgs) => {
   const userId = await requireUserId(request);
-  invariant(params.noteId, "noteId not found");
+  invariant(params.stepEntryId, "step Id not found");
 
-  await deleteNote({ id: params.noteId, userId });
+  await deleteStepEntry({ id: params.stepEntryId, userId });
 
-  return redirect("/notes");
+  return redirect("/stepEntries");
 };
 
-export default function NoteDetailsPage() {
+export default function StepEntryDetailsPage() {
   const data = useLoaderData<typeof loader>();
 
   return (
     <div>
-      <h3 className="text-2xl font-bold">{data.note.title}</h3>
-      <p className="py-6">{data.note.body}</p>
+      <h3 className="text-2xl font-bold">{data.stepEntry.date}</h3>
+      <p className="py-6">{data.stepEntry.numSteps}</p>
       <hr className="my-4" />
       <Form method="post">
         <button

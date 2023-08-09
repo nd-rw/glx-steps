@@ -3,45 +3,46 @@ import { json, redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import { useEffect, useRef } from "react";
 
-import { createNote } from "~/models/note.server";
+import { createStepEntry } from "~/models/stepEntry.server";
 import { requireUserId } from "~/session.server";
 
 export const action = async ({ request }: ActionArgs) => {
   const userId = await requireUserId(request);
 
   const formData = await request.formData();
-  const title = formData.get("title");
-  const body = formData.get("body");
+  const dateInput = formData.get("date") as unknown as Date;
+  const numStepsInput = formData.get("numSteps");
 
-  if (typeof title !== "string" || title.length === 0) {
+  if (!dateInput) {
     return json(
-      { errors: { body: null, title: "Title is required" } },
+      { errors: { numSteps: null, date: "Date is required" } },
       { status: 400 }
     );
   }
 
-  if (typeof body !== "string" || body.length === 0) {
+  if (numStepsInput === null) {
+    console.log(numStepsInput);
+    console.log('numStepsInput typeof', typeof numStepsInput)
     return json(
-      { errors: { body: "Body is required", title: null } },
+      { errors: { numSteps: "numSteps is required", date: null } },
       { status: 400 }
     );
   }
-
-  const note = await createNote({ body, title, userId });
-
-  return redirect(`/notes/${note.id}`);
+  
+    const stepEntry = await createStepEntry({ 'numSteps': Number(numStepsInput), 'date': new Date(dateInput), userId });
+    return redirect(`/stepEntries/${stepEntry.id}`);
 };
 
-export default function NewNotePage() {
+export default function NewStepEntryPage() {
   const actionData = useActionData<typeof action>();
-  const titleRef = useRef<HTMLInputElement>(null);
-  const bodyRef = useRef<HTMLTextAreaElement>(null);
+  const dateRef = useRef<HTMLInputElement>(null);
+  const numStepsRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (actionData?.errors?.title) {
-      titleRef.current?.focus();
-    } else if (actionData?.errors?.body) {
-      bodyRef.current?.focus();
+    if (actionData?.errors?.date) {
+      dateRef.current?.focus();
+    } else if (actionData?.errors?.numSteps) {
+      numStepsRef.current?.focus();
     }
   }, [actionData]);
 
@@ -59,39 +60,44 @@ export default function NewNotePage() {
         <label className="flex w-full flex-col gap-1">
           <span>Title: </span>
           <input
-            ref={titleRef}
-            name="title"
+            ref={dateRef}
+            name="date"
+            type="date"
+            min="2023-08-01"
+            max="2023-08-31"
             className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
-            aria-invalid={actionData?.errors?.title ? true : undefined}
+            aria-invalid={actionData?.errors?.date ? true : undefined}
             aria-errormessage={
-              actionData?.errors?.title ? "title-error" : undefined
+              actionData?.errors?.date ? "title-error" : undefined
             }
           />
         </label>
-        {actionData?.errors?.title ? (
+        {actionData?.errors?.date ? (
           <div className="pt-1 text-red-700" id="title-error">
-            {actionData.errors.title}
+            {actionData.errors.date}
           </div>
         ) : null}
       </div>
 
       <div>
         <label className="flex w-full flex-col gap-1">
-          <span>Body: </span>
-          <textarea
-            ref={bodyRef}
-            name="body"
-            rows={8}
+          <span>Number of Steps: </span>
+          <input
+            ref={numStepsRef}
+            type="number"
+            name="numSteps"
+            min="0"
+            max="99999"
             className="w-full flex-1 rounded-md border-2 border-blue-500 px-3 py-2 text-lg leading-6"
-            aria-invalid={actionData?.errors?.body ? true : undefined}
+            aria-invalid={actionData?.errors?.numSteps ? true : undefined}
             aria-errormessage={
-              actionData?.errors?.body ? "body-error" : undefined
+              actionData?.errors?.numSteps ? "body-error" : undefined
             }
           />
         </label>
-        {actionData?.errors?.body ? (
+        {actionData?.errors?.numSteps ? (
           <div className="pt-1 text-red-700" id="body-error">
-            {actionData.errors.body}
+            {actionData.errors.numSteps}
           </div>
         ) : null}
       </div>
