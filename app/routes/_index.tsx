@@ -34,7 +34,7 @@ export default function Index() {
       [] as { user: Pick<User, "email" | "id">; steps: number }[],
     )
     // Sort highest steps to lowest
-    .sort((a, b) => a.steps + b.steps);
+    .sort((a, b) => b.steps - a.steps);
 
   return (
     <main className="relative min-h-screen flex flex-col">
