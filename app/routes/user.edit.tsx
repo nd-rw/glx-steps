@@ -34,9 +34,9 @@ export const action = async ({ request }: ActionArgs) => {
   return redirect(redirectTo);
 };
 
-export const meta: V2_MetaFunction = () => [{ title: "Login" }];
+export const meta: V2_MetaFunction = () => [{ title: "Edit User" }];
 
-export default function LoginPage() {
+export default function EditUser() {
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") || "/stepEntries";
   const actionData = useActionData<typeof action>();
