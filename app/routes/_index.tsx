@@ -4,10 +4,11 @@ import { json } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
 import { getEveryonesStepEntries } from "~/models/stepEntry.server";
 
-import { numberFormatter, useOptionalUser } from "~/utils";
+import { dateFormatter, numberFormatter, useOptionalUser } from "~/utils";
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -101,6 +102,38 @@ export default function Index() {
             </TableBody>
           </Table>
         )}
+
+        <h2 className="font-bold text-xl pt-24">Recent Step Entries</h2>
+        <Table>
+          <TableHeader>
+            <TableHead>Name</TableHead>
+            <TableHead>Date</TableHead>
+            <TableHead>Steps</TableHead>
+          </TableHeader>
+          <TableBody>
+            {data.everyonesStepEntryListItems
+              .sort(
+                (a, b) =>
+                  new Date(b.date).getTime() - new Date(a.date).getTime(),
+              )
+              .map((entry) => (
+                <TableRow key={entry.user.email}>
+                  <TableCell className="font-bold">
+                    {entry.user.name}{" "}
+                    <span className="text-gray-400 font-normal">
+                      ({entry.user.email})
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    {dateFormatter.format(new Date(entry.date))}
+                  </TableCell>
+                  <TableCell>
+                    {numberFormatter.format(entry.numSteps)}
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
       </div>
     </main>
   );
