@@ -5,6 +5,14 @@ import { Form, Link, useLoaderData } from "@remix-run/react";
 import { getEveryonesStepEntries } from "~/models/stepEntry.server";
 
 import { numberFormatter, useOptionalUser } from "~/utils";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "~/table";
 
 export const meta: V2_MetaFunction = () => [{ title: "GLX Steps" }];
 
@@ -71,17 +79,27 @@ export default function Index() {
         {leaderboardData.length === 0 ? (
           <p className="p-4">No step entries yet</p>
         ) : (
-          <ol>
-            {leaderboardData.map((summary, i) => (
-              <li key={summary.user.email}>
-                <p>
-                  🚶 #{i + 1} - {summary.user.name}{" "}
-                  <span className="text-gray-400">({summary.user.email})</span>{" "}
-                  - {numberFormatter.format(summary.steps)}
-                </p>
-              </li>
-            ))}
-          </ol>
+          <Table>
+            <TableHeader>
+              <TableHead>Rank</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Steps</TableHead>
+            </TableHeader>
+            <TableBody>
+              {leaderboardData.map((summary, i) => (
+                <TableRow key={summary.user.email}>
+                  <TableCell>{i + 1}</TableCell>
+                  <TableCell className="font-bold">
+                    {summary.user.name}{" "}
+                    <span className="text-gray-400 font-normal">
+                      ({summary.user.email})
+                    </span>
+                  </TableCell>
+                  <TableCell>{numberFormatter.format(summary.steps)}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         )}
       </div>
     </main>
