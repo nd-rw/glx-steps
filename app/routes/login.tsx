@@ -23,21 +23,21 @@ export const action = async ({ request }: ActionArgs) => {
   if (!validateEmail(email)) {
     return json(
       { errors: { email: "Email is invalid", password: null } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   if (typeof password !== "string" || password.length === 0) {
     return json(
       { errors: { email: null, password: "Password is required" } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   if (password.length < 8) {
     return json(
       { errors: { email: null, password: "Password is too short" } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -46,7 +46,7 @@ export const action = async ({ request }: ActionArgs) => {
   if (!user) {
     return json(
       { errors: { email: "Invalid email or password", password: null } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -62,7 +62,7 @@ export const meta: V2_MetaFunction = () => [{ title: "Login" }];
 
 export default function LoginPage() {
   const [searchParams] = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || "/stepEntries";
+  const redirectTo = searchParams.get("redirectTo") || "/";
   const actionData = useActionData<typeof action>();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -134,10 +134,7 @@ export default function LoginPage() {
           </div>
 
           <input type="hidden" name="redirectTo" value={redirectTo} />
-          <button
-            type="submit"
-            className="w-full rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-400"
-          >
+          <button type="submit" className="w-full btn btn-default">
             Log in
           </button>
           <div className="flex items-center justify-between">
@@ -146,7 +143,7 @@ export default function LoginPage() {
                 id="remember"
                 name="remember"
                 type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                className="h-4 w-4 rounded border-gray-300 text-violet-600 focus:ring-violet-500"
               />
               <label
                 htmlFor="remember"
@@ -158,7 +155,7 @@ export default function LoginPage() {
             <div className="text-center text-sm text-gray-500">
               Don't have an account?{" "}
               <Link
-                className="text-blue-500 underline"
+                className="text-violet-500 underline"
                 to={{
                   pathname: "/join",
                   search: searchParams.toString(),

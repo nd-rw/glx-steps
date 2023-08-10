@@ -16,21 +16,25 @@ export const action = async ({ request }: ActionArgs) => {
   if (!dateInput) {
     return json(
       { errors: { numSteps: null, date: "Date is required" } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   if (numStepsInput === null) {
     console.log(numStepsInput);
-    console.log('numStepsInput typeof', typeof numStepsInput)
+    console.log("numStepsInput typeof", typeof numStepsInput);
     return json(
       { errors: { numSteps: "numSteps is required", date: null } },
-      { status: 400 }
+      { status: 400 },
     );
   }
-  
-    const stepEntry = await createStepEntry({ 'numSteps': Number(numStepsInput), 'date': new Date(dateInput), userId });
-    return redirect(`/stepEntries/${stepEntry.id}`);
+
+  const stepEntry = await createStepEntry({
+    numSteps: Number(numStepsInput),
+    date: new Date(dateInput),
+    userId,
+  });
+  return redirect(`/stepEntries/${stepEntry.id}`);
 };
 
 export default function NewStepEntryPage() {
@@ -65,7 +69,7 @@ export default function NewStepEntryPage() {
             type="date"
             min="2023-08-01"
             max="2023-08-31"
-            className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
+            className="flex-1 rounded-md border-2 border-gray-500 px-3 text-lg leading-loose"
             aria-invalid={actionData?.errors?.date ? true : undefined}
             aria-errormessage={
               actionData?.errors?.date ? "title-error" : undefined
@@ -88,7 +92,7 @@ export default function NewStepEntryPage() {
             name="numSteps"
             min="0"
             max="99999"
-            className="w-full flex-1 rounded-md border-2 border-blue-500 px-3 py-2 text-lg leading-6"
+            className="w-full flex-1 rounded-md border-2 border-gray-500 px-3 py-2 text-lg leading-6"
             aria-invalid={actionData?.errors?.numSteps ? true : undefined}
             aria-errormessage={
               actionData?.errors?.numSteps ? "body-error" : undefined
@@ -103,11 +107,8 @@ export default function NewStepEntryPage() {
       </div>
 
       <div className="text-right">
-        <button
-          type="submit"
-          className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-400"
-        >
-          Save
+        <button type="submit" className="btn btn-default">
+          Save Step Entry
         </button>
       </div>
     </Form>

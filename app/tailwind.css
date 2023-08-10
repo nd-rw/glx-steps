@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-600 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 whitespace-nowrap;
+    @apply h-10 px-4 py-2;
+  }
+
+  .btn.btn-default {
+    @apply bg-violet-800 text-violet-50 hover:bg-violet-800/90;
+  }
+
+  .btn.btn-secondary {
+    @apply bg-gray-300 text-gray-900 hover:bg-gray-300/60;
+  }
+
+  .btn.btn-destructive {
+    @apply bg-red-600 text-red-50 hover:bg-red-600/90;
+  }
+
+  .btn.btn-outline {
+    @apply border bg-transparent  hover:bg-violet-100 hover:text-violet-900;
+  }
+
+  .btn.btn-ghost {
+    @apply hover:bg-violet-100 hover:text-violet-900;
+  }
+}

@@ -14,10 +14,14 @@ export function getStepEntry({
   });
 }
 
-
 export function getEveryonesStepEntries() {
   return prisma.stepEntry.findMany({
-    select: { id: true, numSteps: true, date: true, user: {select: { email: true} }},
+    select: {
+      id: true,
+      numSteps: true,
+      date: true,
+      user: { select: { id: true, email: true } },
+    },
     orderBy: { date: "desc" },
   });
 }

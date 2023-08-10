@@ -10,6 +10,7 @@ import invariant from "tiny-invariant";
 
 import { deleteStepEntry, getStepEntry } from "~/models/stepEntry.server";
 import { requireUserId } from "~/session.server";
+import { dateFormatter, numberFormatter } from "~/utils";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const userId = await requireUserId(request);
@@ -36,14 +37,13 @@ export default function StepEntryDetailsPage() {
 
   return (
     <div>
-      <h3 className="text-2xl font-bold">{data.stepEntry.date}</h3>
-      <p className="py-6">{data.stepEntry.numSteps}</p>
+      <h3 className="text-2xl font-bold">
+        {dateFormatter.format(new Date(data.stepEntry.date))}
+      </h3>
+      <p className="py-6">{numberFormatter.format(data.stepEntry.numSteps)}</p>
       <hr className="my-4" />
       <Form method="post">
-        <button
-          type="submit"
-          className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-400"
-        >
+        <button type="submit" className="btn btn-destructive">
           Delete
         </button>
       </Form>

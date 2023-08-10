@@ -22,21 +22,21 @@ export const action = async ({ request }: ActionArgs) => {
   if (!validateEmail(email)) {
     return json(
       { errors: { email: "Email is invalid", password: null } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   if (typeof password !== "string" || password.length === 0) {
     return json(
       { errors: { email: null, password: "Password is required" } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   if (password.length < 8) {
     return json(
       { errors: { email: null, password: "Password is too short" } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -49,7 +49,7 @@ export const action = async ({ request }: ActionArgs) => {
           password: null,
         },
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -139,17 +139,14 @@ export default function Join() {
           </div>
 
           <input type="hidden" name="redirectTo" value={redirectTo} />
-          <button
-            type="submit"
-            className="w-full rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-400"
-          >
+          <button type="submit" className="w-full btn btn-default">
             Create Account
           </button>
           <div className="flex items-center justify-center">
             <div className="text-center text-sm text-gray-500">
               Already have an account?{" "}
               <Link
-                className="text-blue-500 underline"
+                className="text-violet-500 underline"
                 to={{
                   pathname: "/login",
                   search: searchParams.toString(),
