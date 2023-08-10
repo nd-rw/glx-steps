@@ -20,7 +20,7 @@ export function getEveryonesStepEntries() {
       id: true,
       numSteps: true,
       date: true,
-      user: { select: { id: true, email: true } },
+      user: { select: { id: true, email: true, name: true } },
     },
     orderBy: { date: "desc" },
   });

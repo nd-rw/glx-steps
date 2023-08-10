@@ -31,7 +31,7 @@ export default function Index() {
         }
         return acc;
       },
-      [] as { user: Pick<User, "email" | "id">; steps: number }[],
+      [] as { user: Pick<User, "email" | "id" | "name">; steps: number }[],
     )
     // Sort highest steps to lowest
     .sort((a, b) => b.steps - a.steps);
@@ -72,11 +72,12 @@ export default function Index() {
           <p className="p-4">No step entries yet</p>
         ) : (
           <ol>
-            {leaderboardData.map((userStepSummary, i) => (
-              <li key={userStepSummary.user.email}>
+            {leaderboardData.map((summary, i) => (
+              <li key={summary.user.email}>
                 <p>
-                  🚶 #{i + 1} - {userStepSummary.user.email} -{" "}
-                  {numberFormatter.format(userStepSummary.steps)}
+                  🚶 #{i + 1} - {summary.user.name}{" "}
+                  <span className="text-gray-400">({summary.user.email})</span>{" "}
+                  - {numberFormatter.format(summary.steps)}
                 </p>
               </li>
             ))}

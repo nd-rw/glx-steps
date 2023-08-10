@@ -36,11 +36,16 @@ export default function StepEntriesPage() {
           </h1>
         </div>
         <p>{user.email}</p>
-        <Form action="/logout" method="post">
-          <button type="submit" className="btn btn-secondary">
-            Logout
-          </button>
-        </Form>
+        <div className="flex space-x-2">
+          <Link to="/user/edit" className="btn btn-secondary">
+            Edit Name ({user.name})
+          </Link>
+          <Form action="/logout" method="post">
+            <button type="submit" className="btn btn-secondary">
+              Logout
+            </button>
+          </Form>
+        </div>
       </header>
 
       <main className="flex h-full">

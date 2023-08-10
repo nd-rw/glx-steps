@@ -17,25 +17,35 @@ export const action = async ({ request }: ActionArgs) => {
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
+  const name = formData.get("name");
   const redirectTo = safeRedirect(formData.get("redirectTo"), "/");
 
   if (!validateEmail(email)) {
     return json(
-      { errors: { email: "Email is invalid", password: null } },
+      { errors: { email: "Email is invalid", password: null, name: null } },
+      { status: 400 },
+    );
+  }
+
+  if (typeof name !== "string" || name.length === 0) {
+    return json(
+      { errors: { email: null, password: null, name: "Name is required" } },
       { status: 400 },
     );
   }
 
   if (typeof password !== "string" || password.length === 0) {
     return json(
-      { errors: { email: null, password: "Password is required" } },
+      { errors: { email: null, password: "Password is required", name: null } },
       { status: 400 },
     );
   }
 
   if (password.length < 8) {
     return json(
-      { errors: { email: null, password: "Password is too short" } },
+      {
+        errors: { email: null, password: "Password is too short", name: null },
+      },
       { status: 400 },
     );
   }
@@ -47,13 +57,14 @@ export const action = async ({ request }: ActionArgs) => {
         errors: {
           email: "A user already exists with this email",
           password: null,
+          name: null,
         },
       },
       { status: 400 },
     );
   }
 
-  const user = await createUser(email, password);
+  const user = await createUser(email, password, name);
 
   return createUserSession({
     redirectTo,
@@ -70,6 +81,7 @@ export default function Join() {
   const redirectTo = searchParams.get("redirectTo") ?? undefined;
   const actionData = useActionData<typeof action>();
   const emailRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -77,6 +89,8 @@ export default function Join() {
       emailRef.current?.focus();
     } else if (actionData?.errors?.password) {
       passwordRef.current?.focus();
+    } else if (actionData?.errors?.name) {
+      nameRef.current?.focus();
     }
   }, [actionData]);
 
@@ -107,6 +121,33 @@ export default function Join() {
               {actionData?.errors?.email ? (
                 <div className="pt-1 text-red-700" id="email-error">
                   {actionData.errors.email}
+                </div>
+              ) : null}
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Name
+            </label>
+            <div className="mt-1">
+              <input
+                ref={nameRef}
+                id="name"
+                required
+                autoFocus={true}
+                name="name"
+                autoComplete="name"
+                aria-invalid={actionData?.errors?.name ? true : undefined}
+                aria-describedby="name-error"
+                className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+              />
+              {actionData?.errors?.name ? (
+                <div className="pt-1 text-red-700" id="name-error">
+                  {actionData.errors.name}
                 </div>
               ) : null}
             </div>

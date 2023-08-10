@@ -28,6 +28,7 @@ async function seed() {
           hash: hashedPassword,
         },
       },
+      name: "Rachel",
     },
   });
 
