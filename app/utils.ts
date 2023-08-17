@@ -1,7 +1,7 @@
+import type { User } from "@prisma/client";
 import { useMatches } from "@remix-run/react";
 import { useMemo } from "react";
 
-import type { User } from "~/models/stepEntry.server";
 
 const DEFAULT_REDIRECT = "/";
 

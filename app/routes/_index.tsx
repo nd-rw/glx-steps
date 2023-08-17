@@ -8,7 +8,6 @@ import { dateFormatter, numberFormatter, useOptionalUser } from "~/utils";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -27,29 +26,26 @@ export default function Index() {
   const user = useOptionalUser();
 
   const leaderboardData = data.everyonesStepEntryListItems
-    .reduce(
-      (acc, entry) => {
-        const existing = acc.find((e) => e.user.id === entry.user.id);
-        if (existing) {
-          existing.steps += entry.numSteps;
-        } else {
-          acc.push({
-            user: entry.user,
-            steps: entry.numSteps,
-          });
-        }
-        return acc;
-      },
-      [] as { user: Pick<User, "email" | "id" | "name">; steps: number }[],
-    )
+    .reduce((acc, entry) => {
+      const existing = acc.find((e) => e.user.id === entry.user.id);
+      if (existing) {
+        existing.steps += entry.numSteps;
+      } else {
+        acc.push({
+          user: entry.user,
+          steps: entry.numSteps,
+        });
+      }
+      return acc;
+    }, [] as { user: Pick<User, "email" | "id" | "name">; steps: number }[])
     // Sort highest steps to lowest
     .sort((a, b) => b.steps - a.steps);
 
   return (
-    <main className="relative min-h-screen flex flex-col">
-      <div className="p-8 space-y-8 max-w-4xl w-full mx-auto">
-        <div className="flex justify-between items-end w-full">
-          <h1 className="font-light text-6xl">
+    <main className="relative flex min-h-screen flex-col">
+      <div className="mx-auto w-full max-w-4xl space-y-8 p-8">
+        <div className="flex w-full items-end justify-between">
+          <h1 className="text-6xl font-light">
             <span className="font-black">GLX</span> Steps
           </h1>
 
@@ -92,7 +88,7 @@ export default function Index() {
                   <TableCell>{i + 1}</TableCell>
                   <TableCell className="font-bold">
                     {summary.user.name}{" "}
-                    <span className="text-gray-400 font-normal">
+                    <span className="font-normal text-gray-400">
                       ({summary.user.email})
                     </span>
                   </TableCell>
@@ -103,7 +99,7 @@ export default function Index() {
           </Table>
         )}
 
-        <h2 className="font-bold text-xl pt-24">Recent Step Entries</h2>
+        <h2 className="pt-24 text-xl font-bold">Recent Step Entries</h2>
         <Table>
           <TableHeader>
             <TableHead>Name</TableHead>
@@ -114,13 +110,13 @@ export default function Index() {
             {data.everyonesStepEntryListItems
               .sort(
                 (a, b) =>
-                  new Date(b.date).getTime() - new Date(a.date).getTime(),
+                  new Date(b.date).getTime() - new Date(a.date).getTime()
               )
               .map((entry) => (
                 <TableRow key={entry.user.email}>
                   <TableCell className="font-bold">
                     {entry.user.name}{" "}
-                    <span className="text-gray-400 font-normal">
+                    <span className="font-normal text-gray-400">
                       ({entry.user.email})
                     </span>
                   </TableCell>
