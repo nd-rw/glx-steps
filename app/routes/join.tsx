@@ -6,6 +6,7 @@ import { useEffect, useRef } from "react";
 import { createUser, getUserByEmail } from "~/models/user.server";
 import { createUserSession, getUserId } from "~/session.server";
 import { safeRedirect, validateEmail } from "~/utils";
+import { glxEmailAdressesInLowerCase } from "./emails";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const userId = await getUserId(request);
@@ -23,21 +24,34 @@ export const action = async ({ request }: ActionArgs) => {
   if (!validateEmail(email)) {
     return json(
       { errors: { email: "Email is invalid", password: null, name: null } },
-      { status: 400 },
+      { status: 400 }
+    );
+  }
+
+  if (!glxEmailAdressesInLowerCase.includes(email.toLowerCase())) {
+    return json(
+      {
+        errors: {
+          email: "Email is not in GLX list",
+          password: null,
+          name: null,
+        },
+      },
+      { status: 400 }
     );
   }
 
   if (typeof name !== "string" || name.length === 0) {
     return json(
       { errors: { email: null, password: null, name: "Name is required" } },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
   if (typeof password !== "string" || password.length === 0) {
     return json(
       { errors: { email: null, password: "Password is required", name: null } },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
@@ -46,7 +60,7 @@ export const action = async ({ request }: ActionArgs) => {
       {
         errors: { email: null, password: "Password is too short", name: null },
       },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
@@ -60,7 +74,7 @@ export const action = async ({ request }: ActionArgs) => {
           name: null,
         },
       },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
@@ -180,7 +194,7 @@ export default function Join() {
           </div>
 
           <input type="hidden" name="redirectTo" value={redirectTo} />
-          <button type="submit" className="w-full btn btn-default">
+          <button type="submit" className="btn btn-default w-full">
             Create Account
           </button>
           <div className="flex items-center justify-center">
