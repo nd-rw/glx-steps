@@ -2,21 +2,14 @@ import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 
-import {
-  getEveryonesStepEntries,
-  getStepEntryListItems,
-} from "~/models/stepEntry.server";
+import { getStepEntryListItems } from "~/models/stepEntry.server";
 import { requireUserId } from "~/session.server";
 import { dateFormatter, useUser } from "~/utils";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const userId = await requireUserId(request);
   const stepEntryListItems = await getStepEntryListItems({ userId });
-  const everyonesStepEntryListItems = await getEveryonesStepEntries();
-  console.log(
-    "🚀 ~ loader ~ everyonesStepEntryListItems:",
-    everyonesStepEntryListItems,
-  );
+
   return json({ stepEntryListItems });
 };
 
@@ -25,7 +18,7 @@ export default function StepEntriesPage() {
   const user = useUser();
 
   return (
-    <div className="flex h-full min-h-screen flex-col max-w-4xl mx-auto border-x bg-gray-50">
+    <div className="mx-auto flex h-full min-h-screen max-w-4xl flex-col border-x bg-gray-50">
       <header className="flex items-center justify-between bg-gray-200 p-4 text-gray-900">
         <div className="flex space-x-4">
           <Link to="/" className="btn btn-default">
