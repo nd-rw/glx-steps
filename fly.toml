@@ -1,4 +1,5 @@
-app = "my-remix-app-fe06"
+app = "glx-steps"
+primary_region = "syd"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = [ ]
@@ -43,7 +44,7 @@ script_checks = [ ]
   interval = "10s"
   grace_period = "5s"
   method = "get"
-  path = "/healthcheck"
+  path = "/"
   protocol = "http"
   timeout = "2s"
   tls_skip_verify = false
