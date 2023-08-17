@@ -41,6 +41,11 @@ export default function StepEntryDetailsPage() {
         {dateFormatter.format(new Date(data.stepEntry.date))}
       </h3>
       <p className="py-6">{numberFormatter.format(data.stepEntry.numSteps)}</p>
+      <a href={`${data.stepEntry.linkToPhoto}`}>
+        {data.stepEntry.linkToPhoto
+          ? "Link to photo evidence"
+          : "No photo found"}
+      </a>
       <hr className="my-4" />
       <Form method="post">
         <button type="submit" className="btn btn-destructive">
