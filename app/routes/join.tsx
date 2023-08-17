@@ -58,7 +58,11 @@ export const action = async ({ request }: ActionArgs) => {
   if (password.length < 8) {
     return json(
       {
-        errors: { email: null, password: "Password is too short", name: null },
+        errors: {
+          email: null,
+          password: "Password must be at least 8 characters long",
+          name: null,
+        },
       },
       { status: 400 }
     );
