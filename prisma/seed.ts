@@ -37,6 +37,7 @@ async function seed() {
       date: new Date(),
       numSteps: getRandomNumSteps(0, 30000),
       userId: user.id,
+      linkToPhoto: "https://i.imgur.com/0y8Ftya.jpg",
     },
   });
 
@@ -45,6 +46,7 @@ async function seed() {
       date: addDays(new Date(), 1),
       numSteps: getRandomNumSteps(0, 30000),
       userId: user.id,
+      linkToPhoto: "https://i.imgur.com/0y8Ftya.jpg",
     },
   });
 
@@ -53,6 +55,7 @@ async function seed() {
       date: addDays(new Date(), 2),
       numSteps: getRandomNumSteps(0, 30000),
       userId: user.id,
+      linkToPhoto: "https://i.imgur.com/0y8Ftya.jpg",
     },
   });
 
@@ -61,6 +64,7 @@ async function seed() {
       date: addDays(new Date(), 3),
       numSteps: getRandomNumSteps(0, 30000),
       userId: user.id,
+      linkToPhoto: "https://i.imgur.com/0y8Ftya.jpg",
     },
   });
 
@@ -69,6 +73,7 @@ async function seed() {
       date: addDays(new Date(), 4),
       numSteps: getRandomNumSteps(0, 30000),
       userId: user.id,
+      linkToPhoto: "https://i.imgur.com/0y8Ftya.jpg",
     },
   });
 
@@ -77,6 +82,7 @@ async function seed() {
       date: addDays(new Date(), 5),
       numSteps: getRandomNumSteps(0, 30000),
       userId: user.id,
+      linkToPhoto: "https://i.imgur.com/0y8Ftya.jpg",
     },
   });
 
@@ -85,6 +91,7 @@ async function seed() {
       date: addDays(new Date(), 6),
       numSteps: getRandomNumSteps(0, 30000),
       userId: user.id,
+      linkToPhoto: "https://i.imgur.com/0y8Ftya.jpg",
     },
   });
 
