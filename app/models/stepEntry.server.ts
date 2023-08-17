@@ -9,7 +9,7 @@ export function getStepEntry({
   userId: User["id"];
 }) {
   return prisma.stepEntry.findFirst({
-    select: { id: true, numSteps: true, date: true },
+    select: { id: true, numSteps: true, date: true, linkToPhoto: true },
     where: { id, userId },
   });
 }
@@ -20,6 +20,7 @@ export function getEveryonesStepEntries() {
       id: true,
       numSteps: true,
       date: true,
+      linkToPhoto: true,
       user: { select: { id: true, email: true, name: true } },
     },
     orderBy: { date: "desc" },
@@ -29,7 +30,15 @@ export function getEveryonesStepEntries() {
 export function getStepEntryListItems({ userId }: { userId: User["id"] }) {
   return prisma.stepEntry.findMany({
     where: { userId },
-    select: { id: true, numSteps: true, date: true },
+    select: { id: true, numSteps: true, date: true, linkToPhoto: true },
+    orderBy: { date: "desc" },
+  });
+}
+
+export function getPreviousStepEntryDates({ userId }: { userId: User["id"] }) {
+  return prisma.stepEntry.findMany({
+    where: { userId },
+    select: { date: true},
     orderBy: { date: "desc" },
   });
 }
@@ -37,14 +46,16 @@ export function getStepEntryListItems({ userId }: { userId: User["id"] }) {
 export function createStepEntry({
   numSteps,
   date,
+  linkToPhoto,
   userId,
-}: Pick<StepEntry, "numSteps" | "date"> & {
+}: Pick<StepEntry, "numSteps" | "date" | "linkToPhoto"> & {
   userId: User["id"];
 }) {
   return prisma.stepEntry.create({
     data: {
       numSteps,
       date,
+      linkToPhoto,
       user: {
         connect: {
           id: userId,
