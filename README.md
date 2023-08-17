@@ -36,3 +36,4 @@ Other useful commands can be found under "scripts" in `package.json`.
 - creating users, and logging in and out [./app/models/user.server.ts](./app/models/user.server.ts)
 - user sessions, and verifying them [./app/session.server.ts](./app/session.server.ts)
 - creating step entries, viewing step entries and leaderboard [./app/models/note.server.ts](./app/models/stepEntry.server.ts)
+- test
