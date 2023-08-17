@@ -156,7 +156,9 @@ export default function NewStepEntryPage() {
 
       <div>
         <label className="flex w-full flex-col gap-1">
-          <span>Evidence photo link: </span>
+          <span>
+            Evidence photo link (make sure you include "http://" etc):{" "}
+          </span>
           <input
             ref={linkToPhotoRef}
             id="linkToPhoto"
