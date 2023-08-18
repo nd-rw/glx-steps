@@ -60,7 +60,13 @@ export default function Index() {
 
         <Leaderboards data={data.everyonesStepEntryListItems ?? []} />
 
-        <h2 className="pt-24 text-xl font-bold">Recent Step Entries</h2>
+        <div className="pt-16 flex justify-between items-end">
+          <h2 className="text-xl font-bold">Recent Step Entries</h2>
+          {/* TODO: Make this a Link that goes to a page with full details */}
+          <button className="btn btn-secondary btn-small" disabled>
+            View Full Step Details
+          </button>
+        </div>
         <Table>
           <TableHeader>
             <TableHead>Name</TableHead>

@@ -27,6 +27,10 @@
   .btn.btn-ghost {
     @apply hover:bg-violet-100 hover:text-violet-900;
   }
+
+  .btn.btn-small {
+    @apply h-8 px-4 py-1;
+  }
 }
 
 /* Replace dropdown arrow for select (padding is a lil off tho) */
