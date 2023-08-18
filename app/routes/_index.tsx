@@ -1,5 +1,4 @@
 import type { V2_MetaFunction } from "@remix-run/node";
-import type { User } from "@prisma/client";
 import { json } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
 import { getEveryonesStepEntries } from "~/models/stepEntry.server";
@@ -13,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/table";
+import { Leaderboards } from "~/leaderboards";
 
 export const meta: V2_MetaFunction = () => [{ title: "GLX Steps" }];
 
@@ -24,22 +24,6 @@ export const loader = async () => {
 export default function Index() {
   const data = useLoaderData<typeof loader>();
   const user = useOptionalUser();
-
-  const leaderboardData = data.everyonesStepEntryListItems
-    .reduce((acc, entry) => {
-      const existing = acc.find((e) => e.user.id === entry.user.id);
-      if (existing) {
-        existing.steps += entry.numSteps;
-      } else {
-        acc.push({
-          user: entry.user,
-          steps: entry.numSteps,
-        });
-      }
-      return acc;
-    }, [] as { user: Pick<User, "email" | "id" | "name">; steps: number }[])
-    // Sort highest steps to lowest
-    .sort((a, b) => b.steps - a.steps);
 
   return (
     <main className="relative flex min-h-screen flex-col">
@@ -73,31 +57,8 @@ export default function Index() {
             )}
           </div>
         </div>
-        {leaderboardData.length === 0 ? (
-          <p className="p-4">No step entries yet</p>
-        ) : (
-          <Table>
-            <TableHeader>
-              <TableHead>Rank</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Steps</TableHead>
-            </TableHeader>
-            <TableBody>
-              {leaderboardData.map((summary, i) => (
-                <TableRow key={summary.user.email}>
-                  <TableCell>{i + 1}</TableCell>
-                  <TableCell className="font-bold">
-                    {summary.user.name}{" "}
-                    <span className="font-normal text-gray-400">
-                      ({summary.user.email})
-                    </span>
-                  </TableCell>
-                  <TableCell>{numberFormatter.format(summary.steps)}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
+
+        <Leaderboards data={data.everyonesStepEntryListItems ?? []} />
 
         <h2 className="pt-24 text-xl font-bold">Recent Step Entries</h2>
         <Table>
@@ -110,7 +71,7 @@ export default function Index() {
             {data.everyonesStepEntryListItems
               .sort(
                 (a, b) =>
-                  new Date(b.date).getTime() - new Date(a.date).getTime()
+                  new Date(b.date).getTime() - new Date(a.date).getTime(),
               )
               .map((entry) => (
                 <TableRow key={entry.user.email}>
