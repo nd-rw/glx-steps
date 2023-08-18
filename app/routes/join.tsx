@@ -18,13 +18,14 @@ export const action = async ({ request }: ActionArgs) => {
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
+  const repeatPassword = formData.get("repeat-password");
   const name = formData.get("name");
   const redirectTo = safeRedirect(formData.get("redirectTo"), "/");
 
   if (!validateEmail(email)) {
     return json(
       { errors: { email: "Email is invalid", password: null, name: null } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -37,21 +38,21 @@ export const action = async ({ request }: ActionArgs) => {
           name: null,
         },
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   if (typeof name !== "string" || name.length === 0) {
     return json(
       { errors: { email: null, password: null, name: "Name is required" } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   if (typeof password !== "string" || password.length === 0) {
     return json(
       { errors: { email: null, password: "Password is required", name: null } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -64,7 +65,16 @@ export const action = async ({ request }: ActionArgs) => {
           name: null,
         },
       },
-      { status: 400 }
+      { status: 400 },
+    );
+  }
+
+  if (password !== repeatPassword) {
+    return json(
+      {
+        errors: { email: null, password: "Passwords do not match", name: null },
+      },
+      { status: 400 },
     );
   }
 
@@ -78,7 +88,7 @@ export const action = async ({ request }: ActionArgs) => {
           name: null,
         },
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -194,6 +204,27 @@ export default function Join() {
                   {actionData.errors.password}
                 </div>
               ) : null}
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="repeat-password"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Repeat Password
+            </label>
+            <div className="mt-1">
+              <input
+                id="repeat-password"
+                ref={passwordRef}
+                name="repeat-password"
+                type="password"
+                autoComplete="new-password"
+                aria-invalid={actionData?.errors?.password ? true : undefined}
+                aria-describedby="password-error"
+                className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+              />
             </div>
           </div>
 
