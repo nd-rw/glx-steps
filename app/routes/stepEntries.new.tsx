@@ -20,7 +20,7 @@ export const action = async ({ request }: ActionArgs) => {
     userId,
   });
   const formattedPreviousStepEntryDates = previousStepEntryDates.map(
-    (obj) => obj.date.toISOString().split("T")[0]
+    (obj) => obj.date.toISOString().split("T")[0],
   );
 
   if (!dateInput) {
@@ -28,7 +28,7 @@ export const action = async ({ request }: ActionArgs) => {
       {
         errors: { numSteps: null, date: "Date is required", linkToPhoto: null },
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -43,7 +43,7 @@ export const action = async ({ request }: ActionArgs) => {
           linkToPhoto: null,
         },
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -56,7 +56,7 @@ export const action = async ({ request }: ActionArgs) => {
           linkToPhoto: null,
         },
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -69,7 +69,7 @@ export const action = async ({ request }: ActionArgs) => {
           numSteps: null,
         },
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -99,25 +99,17 @@ export default function NewStepEntryPage() {
   }, [actionData]);
 
   return (
-    <Form
-      method="post"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 8,
-        width: "100%",
-      }}
-    >
+    <Form method="post" className="flex flex-col gap-4 w-full">
       <div>
         <label className="flex w-full flex-col gap-1">
-          <span>Title: </span>
+          <span className="block font-medium text-gray-700">Title</span>
           <input
             ref={dateRef}
             name="date"
             type="date"
             min="2023-08-01"
             max="2023-08-31"
-            className="flex-1 rounded-md border-2 border-gray-500 px-3 text-lg leading-loose"
+            className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
             aria-invalid={actionData?.errors?.date ? true : undefined}
             aria-errormessage={
               actionData?.errors?.date ? "title-error" : undefined
@@ -133,14 +125,16 @@ export default function NewStepEntryPage() {
 
       <div>
         <label className="flex w-full flex-col gap-1">
-          <span>Number of Steps: </span>
+          <span className="block font-medium text-gray-700">
+            Number of Steps
+          </span>
           <input
             ref={numStepsRef}
             type="number"
             name="numSteps"
             min="0"
             max="99999"
-            className="w-full flex-1 rounded-md border-2 border-gray-500 px-3 py-2 text-lg leading-6"
+            className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
             aria-invalid={actionData?.errors?.numSteps ? true : undefined}
             aria-errormessage={
               actionData?.errors?.numSteps ? "body-error" : undefined
@@ -156,8 +150,8 @@ export default function NewStepEntryPage() {
 
       <div>
         <label className="flex w-full flex-col gap-1">
-          <span>
-            Evidence photo link (make sure you include "http://" etc):{" "}
+          <span className="block font-medium text-gray-700">
+            Evidence photo link (make sure you include "http://" etc){" "}
           </span>
           <input
             ref={linkToPhotoRef}
@@ -171,6 +165,18 @@ export default function NewStepEntryPage() {
             className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
           />
         </label>
+        <p className="mt-1 mb-4 text-gray-500 text-sm">
+          Not sure where to upload? Try{" "}
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://imgur.com/upload"
+            className="text-violet-600 hover:no-underline underline"
+          >
+            Imgr
+          </a>{" "}
+          (no account needed)
+        </p>
         {actionData?.errors?.linkToPhoto ? (
           <div className="pt-1 text-red-700" id="body-error">
             {actionData.errors.linkToPhoto}
